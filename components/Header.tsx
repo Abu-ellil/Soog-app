@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -17,57 +17,25 @@ const Header: React.FC<HeaderProps> = ({ title, showBackButton = false, rightCom
   };
 
   return (
-    <View style={styles.header}>
-      <View style={styles.leftContainer}>
+    <View className="flex-row items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
+      <View className="flex-1 items-start">
         {showBackButton && (
-          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <TouchableOpacity onPress={handleBack} className="p-1">
             <Ionicons name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
         )}
       </View>
       
-      <View style={styles.centerContainer}>
-        <Text style={styles.title}>{title}</Text>
+      <View className="flex-1 items-center">
+        <Text className="text-lg font-bold text-black">{title}</Text>
       </View>
       
-      <View style={styles.rightContainer}>
+      <View className="flex-1 items-end">
         {rightComponent}
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  leftContainer: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  centerContainer: {
-    flex: 2,
-    alignItems: 'center',
-  },
-  rightContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  backButton: {
-    padding: 4,
-  },
-});
 
 export default Header;

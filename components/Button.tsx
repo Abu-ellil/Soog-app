@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 
 interface ButtonProps {
   title: string;
@@ -18,96 +18,56 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   fullWidth = false,
 }) => {
-  const getButtonStyle = () => {
-    const baseStyle = [styles.button, fullWidth && styles.fullWidth];
+  // Determine button classes based on props
+  const getButtonClasses = () => {
+    let baseClasses = 'py-3 px-5 rounded-lg items-center justify-center ';
+    
+    if (fullWidth) {
+      baseClasses += 'w-full ';
+    }
     
     if (disabled || loading) {
-      return [...baseStyle, styles.disabledButton];
+      return baseClasses + 'bg-gray-400 ';
     }
     
     switch (variant) {
       case 'secondary':
-        return [...baseStyle, styles.secondaryButton];
+        return baseClasses + 'bg-gray-500 ';
       case 'danger':
-        return [...baseStyle, styles.dangerButton];
+        return baseClasses + 'bg-red-500 ';
       default:
-        return [...baseStyle, styles.primaryButton];
+        return baseClasses + 'bg-blue-500 ';
     }
- };
+  };
 
-  const getTextStyle = () => {
+  const getTextClasses = () => {
+    let baseClasses = 'text-base font-semibold ';
+    
     if (disabled || loading) {
-      return styles.disabledText;
+      return baseClasses + 'text-gray-400 ';
     }
     
     switch (variant) {
       case 'secondary':
-        return styles.secondaryText;
       case 'danger':
-        return styles.dangerText;
       default:
-        return styles.primaryText;
+        return baseClasses + 'text-white ';
     }
   };
 
   return (
     <TouchableOpacity
-      style={getButtonStyle()}
+      className={getButtonClasses()}
       onPress={onPress}
       disabled={disabled || loading}
     >
       {loading ? (
         <ActivityIndicator size="small" color="#fff" />
       ) : (
-        <Text style={getTextStyle()}>{title}</Text>
+        <Text className={getTextClasses()}>{title}</Text>
       )}
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  fullWidth: {
-    width: '100%',
-  },
- primaryButton: {
-    backgroundColor: '#007bff',
-  },
-  secondaryButton: {
-    backgroundColor: '#6c757d',
-  },
-  dangerButton: {
-    backgroundColor: '#dc3545',
-  },
-  disabledButton: {
-    backgroundColor: '#cccccc',
-  },
-  primaryText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  secondaryText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  dangerText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  disabledText: {
-    color: '#666666',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
 
 export default Button;

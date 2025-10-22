@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { View, Text, FlatList, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useAuth } from '../../lib/hooks/useAuth';
 import { useCart } from '../../lib/hooks/useCart';
@@ -10,9 +10,9 @@ import { api } from '../../lib/api';
 interface Product {
   id: string;
   name: string;
- description: string;
- price: number;
- image: string;
+  description: string;
+  price: number;
+  image: string;
   storeId: string;
 }
 
@@ -123,35 +123,35 @@ export default function StoreScreen() {
 
   if (loading || !store) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className="flex-1 justify-center items-center bg-light-gray">
         <Text>جاري تحميل بيانات المتجر...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-light-gray">
       <Header title={store.name} showBackButton />
-      <ScrollView style={styles.content}>
-        <View style={styles.storeInfo}>
-          <Text style={styles.storeName}>{store.name}</Text>
-          <Text style={styles.storeDescription}>{store.description}</Text>
+      <ScrollView className="flex-1 p-4">
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-xl font-bold mb-2 text-gray-800">{store.name}</Text>
+          <Text className="text-base text-gray-600 mb-3">{store.description}</Text>
           
-          <View style={styles.storeDetails}>
-            <View style={styles.detailItem}>
-              <Text style={styles.detailText}>التصنيف: {store.rating}</Text>
+          <View className="flex-row justify-between">
+            <View className="flex-1 items-center">
+              <Text className="text-sm text-gray-800">التصنيف: {store.rating}</Text>
             </View>
-            <View style={styles.detailItem}>
-              <Text style={styles.detailText}>وقت التوصيل: {store.deliveryTime}</Text>
+            <View className="flex-1 items-center">
+              <Text className="text-sm text-gray-800">وقت التوصيل: {store.deliveryTime}</Text>
             </View>
-            <View style={styles.detailItem}>
-              <Text style={styles.detailText}>رسوم التوصيل: {store.deliveryFee} جنيه</Text>
+            <View className="flex-1 items-center">
+              <Text className="text-sm text-gray-800">رسوم التوصيل: {store.deliveryFee} جنيه</Text>
             </View>
           </View>
         </View>
         
-        <Text style={styles.sectionTitle}>المنتجات</Text>
-        <View style={styles.productsContainer}>
+        <Text className="text-lg font-bold mb-4 text-gray-800">المنتجات</Text>
+        <View className="flex-row flex-wrap justify-between">
           {products.map((product) => (
             <ProductCard
               key={product.id}
@@ -164,64 +164,3 @@ export default function StoreScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  storeInfo: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  storeName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#333',
-  },
-  storeDescription: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 12,
-  },
-  storeDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  detailItem: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  detailText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
-  },
-  productsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-});

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, RefreshControl, ScrollView } from 'react-native';
+import { View, Text, FlatList, RefreshControl, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../lib/hooks/useAuth';
 import Header from '../components/Header';
@@ -21,7 +21,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // Mock data for stores
   const mockStores: Store[] = [
@@ -55,12 +55,12 @@ export default function HomeScreen() {
   ];
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      // Redirect to login if not authenticated
-      router.replace('/(auth)/login');
-      return;
+    // Only load stores if authenticated and not loading
+    if (isAuthenticated) {
+      loadStores();
     }
-    loadStores();
+    // Removed the redirect logic since it's handled in _layout.tsx
+    // and we might have dev bypass
   }, [isAuthenticated]);
 
   const loadStores = async () => {
@@ -88,59 +88,27 @@ export default function HomeScreen() {
     router.push(`/(store)/${storeId}`);
   };
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className="bg-light-gray flex-1 items-center justify-center">
         <Text>جاري تحميل المتاجر...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View className="bg-light-gray flex-1">
       <Header title="توصيلة" />
       <ScrollView
-        style={styles.content}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        <Text style={styles.sectionTitle}>المتاجر القريبة</Text>
-        <View style={styles.storesContainer}>
+        className="flex-1 p-4"
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <Text className="mb-4 text-xl font-bold text-gray-800">المتاجر القريبة</Text>
+        <View className="flex-row flex-wrap justify-between">
           {stores.map((store) => (
-            <StoreCard
-              key={store.id}
-              store={store}
-              onPress={() => handleStorePress(store.id)}
-            />
+            <StoreCard key={store.id} store={store} onPress={() => handleStorePress(store.id)} />
           ))}
         </View>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
-  },
-  storesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-});

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Text } from 'react-native';
 
 interface InputProps {
   label?: string;
@@ -25,10 +25,10 @@ const Input: React.FC<InputProps> = ({
   numberOfLines = 1,
 }) => {
   return (
-    <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+    <View className="w-full mb-4">
+      {label && <Text className="text-base font-semibold mb-2 text-gray-70">{label}</Text>}
       <TextInput
-        style={[styles.input, error ? styles.errorInput : null, multiline && styles.multilineInput]}
+        className={`border border-gray-300 rounded-lg py-3 px-3 text-base bg-white ${error ? 'border-red-500' : ''} ${multiline ? 'h-24 text-left align-top' : ''}`}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
@@ -37,43 +37,9 @@ const Input: React.FC<InputProps> = ({
         multiline={multiline}
         numberOfLines={numberOfLines}
       />
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text className="text-red-500 text-sm mt-1">{error}</Text>}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-    color: '#333',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-  },
-  multilineInput: {
-    textAlignVertical: 'top',
-    height: 100,
-  },
-  errorInput: {
-    borderColor: '#dc3545',
-  },
-  errorText: {
-    color: '#dc3545',
-    fontSize: 14,
-    marginTop: 4,
-  },
-});
 
 export default Input;

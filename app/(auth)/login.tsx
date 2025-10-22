@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../lib/hooks/useAuth';
 import Header from '../../components/Header';
@@ -39,12 +39,12 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-light-gray">
       <Header title="توصيلة" />
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.formContainer}>
-          <Text style={styles.title}>مرحباً بك في توصيلة</Text>
-          <Text style={styles.subtitle}>الرجاء إدخال رقم هاتفك للبدء</Text>
+      <ScrollView contentContainerClassName="flex-grow p-4">
+        <View className="flex-1 justify-center">
+          <Text className="text-2xl font-bold text-center mb-2 text-gray-800">مرحباً بك في توصيلة</Text>
+          <Text className="text-base text-center mb-8 text-gray-600">الرجاء إدخال رقم هاتفك للبدء</Text>
           
           <Input
             label="رقم الهاتف"
@@ -65,31 +65,3 @@ export default function WelcomeScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flexGrow: 1,
-    padding: 16,
-  },
-  formContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-    color: '#333',
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 32,
-    color: '#666',
-  },
-});

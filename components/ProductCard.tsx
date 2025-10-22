@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Product {
   id: string;
   name: string;
- description: string;
- price: number;
- image: string;
- storeId: string;
+  description: string;
+  price: number;
+  image: string;
+  storeId: string;
 }
 
 interface ProductCardProps {
@@ -18,14 +18,14 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: product.image }} style={styles.image} />
-      <View style={styles.content}>
-        <Text style={styles.name}>{product.name}</Text>
-        <Text style={styles.description} numberOfLines={2}>{product.description}</Text>
-        <View style={styles.footer}>
-          <Text style={styles.price}>{product.price} جنيه</Text>
-          <TouchableOpacity style={styles.addButton} onPress={onAddToCart}>
+    <View className="bg-white rounded-xl overflow-hidden mb-4 shadow-sm shadow-gray-300">
+      <Image source={{ uri: product.image }} className="w-full h-36 object-cover" />
+      <View className="p-3">
+        <Text className="text-base font-bold mb-1 text-gray-800">{product.name}</Text>
+        <Text className="text-sm text-gray-600 mb-2 flex-1" numberOfLines={2}>{product.description}</Text>
+        <View className="flex-row justify-between items-center">
+          <Text className="text-lg font-bold text-primary">{product.price} جنيه</Text>
+          <TouchableOpacity className="bg-primary w-9 h-9 rounded-full justify-center items-center" onPress={onAddToCart}>
             <Ionicons name="add" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -34,56 +34,5 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  image: {
-    width: '100%',
-    height: 150,
-    resizeMode: 'cover',
-  },
-  content: {
-    padding: 12,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-    color: '#333',
-  },
-  description: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
-    flex: 1,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  price: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#007bff',
-  },
-  addButton: {
-    backgroundColor: '#007bff',
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default ProductCard;

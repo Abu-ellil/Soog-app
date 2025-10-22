@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useAuth } from '../../lib/hooks/useAuth';
 import Header from '../../components/Header';
@@ -92,154 +92,60 @@ export default function OrderStatusScreen() {
       case 'cancelled': return '#dc3545';
       default: return '#6c757d';
     }
- };
+  };
 
   if (loading || !order) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className="flex-1 justify-center items-center bg-light-gray">
         <Text>جاري تحميل تفاصيل الطلب...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-light-gray">
       <Header title="حالة الطلب" showBackButton />
-      <ScrollView style={styles.content}>
-        <View style={styles.orderInfo}>
-          <Text style={styles.orderId}>رقم الطلب: {order.id}</Text>
-          <View style={[styles.statusContainer, { backgroundColor: `${getStatusColor(order.status)}20` }]}>
-            <Text style={[styles.statusText, { color: getStatusColor(order.status) }]}>
+      <ScrollView className="flex-1 p-4">
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-lg font-bold mb-2 text-gray-800">رقم الطلب: {order.id}</Text>
+          <View className="w-fit px-3 py-1 rounded-full mb-2" style={{ backgroundColor: `${getStatusColor(order.status)}20` }}>
+            <Text className="text-base font-bold" style={{ color: getStatusColor(order.status) }}>
               {getStatusText(order.status)}
             </Text>
           </View>
-          <Text style={styles.orderDate}>تاريخ الطلب: {order.orderDate}</Text>
+          <Text className="text-sm text-gray-600">تاريخ الطلب: {order.orderDate}</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>المتجر</Text>
-          <Text style={styles.sectionText}>{order.storeName}</Text>
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-base font-bold mb-2 text-gray-800">المتجر</Text>
+          <Text className="text-sm text-gray-600">{order.storeName}</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>عنوان التوصيل</Text>
-          <Text style={styles.sectionText}>{order.deliveryAddress}</Text>
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-base font-bold mb-2 text-gray-800">عنوان التوصيل</Text>
+          <Text className="text-sm text-gray-600">{order.deliveryAddress}</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>المنتجات</Text>
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-base font-bold mb-2 text-gray-800">المنتجات</Text>
           {order.items.map((item) => (
-            <View key={item.id} style={styles.itemRow}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemDetails}>{item.quantity} × {item.price} = {item.quantity * item.price} جنيه</Text>
+            <View key={item.id} className="flex-row justify-between py-2 border-b border-gray-200">
+              <Text className="text-sm text-gray-800 flex-2">{item.name}</Text>
+              <Text className="text-sm text-gray-600 text-right flex-1">{item.quantity} × {item.price} = {item.quantity * item.price} جنيه</Text>
             </View>
           ))}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>الإجمالي</Text>
-          <Text style={styles.totalAmount}>{order.total} جنيه</Text>
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-base font-bold mb-2 text-gray-800">الإجمالي</Text>
+          <Text className="text-lg font-bold text-primary text-right">{order.total} جنيه</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>الوقت المقدر للتسليم</Text>
-          <Text style={styles.sectionText}>{order.estimatedDelivery}</Text>
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-base font-bold mb-2 text-gray-800">الوقت المقدر للتسليم</Text>
+          <Text className="text-sm text-gray-600">{order.estimatedDelivery}</Text>
         </View>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  orderInfo: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  orderId: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#333',
-  },
-  statusContainer: {
-    alignSelf: 'flex-start',
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    marginBottom: 8,
-  },
-  statusText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  orderDate: {
-    fontSize: 14,
-    color: '#666',
-  },
-  section: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#333',
-  },
-  sectionText: {
-    fontSize: 14,
-    color: '#666',
-    lineHeight: 20,
-  },
-  itemRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
- itemName: {
-    fontSize: 14,
-    color: '#333',
-    flex: 2,
-  },
-  itemDetails: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'right',
-    flex: 1,
-  },
-  totalAmount: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#007bff',
-    textAlign: 'right',
-  },
-});

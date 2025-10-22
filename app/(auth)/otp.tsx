@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useAuth } from '../../lib/hooks/useAuth';
 import Header from '../../components/Header';
@@ -45,12 +45,12 @@ export default function OtpScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-light-gray">
       <Header title="توصيلة" showBackButton />
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.formContainer}>
-          <Text style={styles.title}>رمز التحقق</Text>
-          <Text style={styles.subtitle}>تم إرسال رمز التحقق إلى {phone}</Text>
+      <ScrollView contentContainerClassName="flex-grow p-4">
+        <View className="flex-1 justify-center">
+          <Text className="text-2xl font-bold text-center mb-2 text-gray-80">رمز التحقق</Text>
+          <Text className="text-base text-center mb-8 text-gray-600">تم إرسال رمز التحقق إلى {phone}</Text>
           
           <Input
             label="رمز التحقق"
@@ -67,7 +67,7 @@ export default function OtpScreen() {
             fullWidth
           />
           
-          <Text style={styles.hintText}>
+          <Text className="text-sm text-center mt-4 text-gray-500 italic">
             ملاحظة: في هذا الإصدار التجريبي، استخدم الرمز 123456
           </Text>
         </View>
@@ -75,38 +75,3 @@ export default function OtpScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flexGrow: 1,
-    padding: 16,
-  },
-  formContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-    color: '#333',
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 32,
-    color: '#666',
-  },
-  hintText: {
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 16,
-    color: '#888',
-    fontStyle: 'italic',
-  },
-});

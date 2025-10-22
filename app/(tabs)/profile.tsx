@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../lib/hooks/useAuth';
 import Header from '../../components/Header';
@@ -15,38 +15,38 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-light-gray">
       <Header title="الملف الشخصي" />
-      <ScrollView style={styles.content}>
-        <View style={styles.profileInfo}>
-          <Text style={styles.sectionTitle}>معلومات الحساب</Text>
+      <ScrollView className="flex-1 p-4">
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-lg font-bold mb-4 text-gray-800">معلومات الحساب</Text>
           
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>رقم الهاتف</Text>
-            <Text style={styles.value}>{user?.phone || 'غير متوفر'}</Text>
+          <View className="flex-row justify-between py-2 border-b border-gray-200">
+            <Text className="text-base text-gray-600">رقم الهاتف</Text>
+            <Text className="text-base font-semibold text-gray-800">{user?.phone || 'غير متوفر'}</Text>
           </View>
           
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>الاسم</Text>
-            <Text style={styles.value}>الزائر</Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>الإعدادات</Text>
-          
-          <View style={styles.settingItem}>
-            <Text style={styles.settingText}>اللغة</Text>
-            <Text style={styles.settingValue}>العربية</Text>
-          </View>
-          
-          <View style={styles.settingItem}>
-            <Text style={styles.settingText}>إشعارات</Text>
-            <Text style={styles.settingValue}>مفعل</Text>
+          <View className="flex-row justify-between py-2 border-b border-gray-200">
+            <Text className="text-base text-gray-600">الاسم</Text>
+            <Text className="text-base font-semibold text-gray-800">الزائر</Text>
           </View>
         </View>
 
-        <View style={styles.logoutButton}>
+        <View className="bg-white p-4 rounded-xl mb-4 shadow-sm shadow-gray-300">
+          <Text className="text-lg font-bold mb-4 text-gray-800">الإعدادات</Text>
+          
+          <View className="flex-row justify-between py-3 border-b border-gray-200">
+            <Text className="text-base text-gray-800">اللغة</Text>
+            <Text className="text-base text-gray-600">العربية</Text>
+          </View>
+          
+          <View className="flex-row justify-between py-3 border-b border-gray-200">
+            <Text className="text-base text-gray-800">إشعارات</Text>
+            <Text className="text-base text-gray-600">مفعل</Text>
+          </View>
+        </View>
+
+        <View className="mt-4">
           <Button
             title="تسجيل الخروج"
             onPress={handleLogout}
@@ -58,76 +58,3 @@ export default function ProfileScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
- },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  profileInfo: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  section: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
- },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  label: {
-    fontSize: 16,
-    color: '#666',
-  },
-  value: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-  },
-  settingItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  settingText: {
-    fontSize: 16,
-    color: '#333',
- },
-  settingValue: {
-    fontSize: 16,
-    color: '#66',
-  },
-  logoutButton: {
-    marginTop: 16,
-  },
-});
