@@ -1,9 +1,95 @@
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useAuth } from '../../lib/hooks/useAuth';
+import Header from '../../components/Header';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+import { api } from '../../lib/api';
 
-export default function LoginScreen() {
+export default function WelcomeScreen() {
+  const [phone, setPhone] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { login } = useAuth();
+
+  const handleSendOTP = async () => {
+    if (!phone) {
+      alert('الرجاء إدخال رقم الهاتف');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // In a real app, this would be an API call to send OTP
+      // For demo purposes, we'll simulate an immediate response
+      const response = await api.post('/auth/request-otp', { phone });
+      
+      // For the demo, we'll directly navigate to OTP screen
+      router.push({
+        pathname: '/(auth)/otp',
+        params: { phone, otp: '123456' } // In real app, OTP would be sent via SMS
+      });
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      alert('حدث خطأ أثناء إرسال رمز التحقق');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Login Screen</Text>
+    <View style={styles.container}>
+      <Header title="توصيلة" />
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>مرحباً بك في توصيلة</Text>
+          <Text style={styles.subtitle}>الرجاء إدخال رقم هاتفك للبدء</Text>
+          
+          <Input
+            label="رقم الهاتف"
+            placeholder="أدخل رقم هاتفك"
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
+          
+          <Button
+            title="إرسال رمز التحقق"
+            onPress={handleSendOTP}
+            loading={loading}
+            fullWidth
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  content: {
+    flexGrow: 1,
+    padding: 16,
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+    color: '#333',
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 32,
+    color: '#666',
+  },
+});

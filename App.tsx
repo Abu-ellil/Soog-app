@@ -1,12 +1,22 @@
-import { ScreenContent } from 'components/ScreenContent';
+import { Redirect, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useAuth } from './lib/hooks/useAuth';
 
 import './global.css';
 
-export default function App() {
+export default function RootLayout() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    // Redirect to login screen if not authenticated
+    return <Redirect href="/(auth)/login" />;
+  }
+
   return (
     <>
-      <ScreenContent title="Home" path="App.tsx"></ScreenContent>
+      <Stack>
+        <Stack.Screen name="index" />
+      </Stack>
       <StatusBar style="auto" />
     </>
   );
